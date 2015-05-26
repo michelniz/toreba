@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./template.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+  <ui:param name="pageTitle" value="Cadastro de Estadio"/>
+  <ui:param name="managedBean" value="#{estadioBean}"/>
+  <ui:param name="size" value="2"/>
+
+
+  <ui:define name="camposDoFormulario">
+    <h:outputText value="Nome:"/>
+    <p:inputText value="#{managedBean.estadio.nome}"/>
+  </ui:define>
+  
+   <ui:define name="tabela">
+    <p:dataTable id="listaEstadios" value="#{managedBean.estadios}" var="estadio" rows="25"
+                 paginator="true"  rowsPerPageTemplate="25,50,75,100" paginatorPosition="bottom" 
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                 currentPageReportTemplate="[ {startRecord} a {endRecord} de {totalRecords} - Página: {currentPage}/{totalPages} ]"                    
+                 rowKey="#{estadio.id}" lazy="true">
+      <p:column headerText="ID">
+        <h:outputText value="#{estadio.id}"/>
+      </p:column>
+      <p:column headerText="Nome">
+        <h:outputText value="#{estadio.nome}"/>
+      </p:column>
+      <p:column>
+        <h:commandButton value="Editar" >
+          <f:setPropertyActionListener value="#{estadio}" 
+                                       target="#{managedBean.estadio}"/>
+        </h:commandButton>
+      </p:column>
+    </p:dataTable>     
+  </ui:define>
+ 
+</ui:composition>

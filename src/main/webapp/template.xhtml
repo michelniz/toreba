@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+  <h:head>
+    <link rel="stylesheet" type="text/css" href="${facesContext.externalContext.requestContextPath}/css/default.css"/>
+    <title>#{pageTitle}</title>
+  </h:head>
+  <h:body>
+    <p:layout fullPage="true">
+      <p:layoutUnit position="north" size="60">
+        <h1>Toreba Sport's -> It's the Game !</h1>
+        <h:form id="formMenu">
+          <p:menubar autoDisplay="true">
+              <p:menuitem value="Campeonato" action="campeonato.faces"/>
+              <p:menuitem value="Estadio" action="estadio.faces" ajax="false"/>
+              <p:menuitem value="Time" action="time.faces" ajax="false"/>
+              <p:menuitem value="Partida" action="partida.faces" ajax="false"/>
+              <p:menuitem value="Classificacao" action="classificacao.faces" ajax="false"/>
+          </p:menubar>
+        </h:form>
+      </p:layoutUnit>
+      <p:layoutUnit position="center">
+        <ui:insert name="content">
+          <h:form id="form">
+            <p:panel header="#{pageTitle}">
+              <p:messages autoUpdate="true"/>
+              <p:commandButton value="Salvar" action="#{managedBean.actionSalvar}"
+                               ajax="false" update=":form"/>
+              &nbsp;&nbsp;
+              <p:commandButton value="Excluir" action="#{managedBean.actionExcluir}"
+                               ajax="false" update=":form"/>
+              
+              <h:panelGrid columns="#{size}" columnClasses="textAlignRight,textAlignLeft">
+                <ui:insert name="camposDoFormulario"/>
+              </h:panelGrid>
+              
+              <br/><br/>
+              <ui:insert name="tabela"/>
+            </p:panel>
+          </h:form>
+        </ui:insert>
+      </p:layoutUnit>
+      <p:layoutUnit position="south" footer="Todos os direitos reservados."/>
+    </p:layout>
+  </h:body>
+</html>

@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./template.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+  <ui:param name="pageTitle" value="Cadastro de Partida"/>
+  <ui:param name="managedBean" value="#{partidaBean}"/>
+  <ui:param name="size" value="6"/>
+
+
+  <ui:define name="camposDoFormulario">
+
+    <h:outputText value="${label['partida.dataJogo']}:"/>
+    <p:inputText id="dataJogo" value="#{managedBean.partida.dataJogo}" required="true" 
+                 label="${label['partida.dataJogo']}"/>
+    <p:message for="dataJogo"/>
+    
+    <h:outputText value="${label['partida.estadio']}:"/>
+    <p:autoComplete id="estadio" value="#{managedBean.partida.estadio}"
+                    converter="#{estadioConverter}"
+                    itemLabel="#{estadio.nome}" 
+                    itemValue="#{estadio}"
+                    var="estadio"
+                    label="${label['partida.estadio']}"
+                    required="true"
+                    forceSelection="true"
+                    completeMethod="#{estadioBean.autoComplete}"
+                    minQueryLength="5"/>
+    <p:message for="estadio"/>
+    
+    <h:outputText value="${label['partida.manda']}:"/>
+    <p:autoComplete id="manda" value="#{managedBean.partida.manda}"
+                    converter="#{timeConverter}"
+                    itemLabel="#{manda.nome}" 
+                    itemValue="#{manda}"
+                    var="manda"
+                    label="${label['partida.manda']}"
+                    required="true"
+                    forceSelection="true"
+                    completeMethod="#{timeBean.autoComplete}"
+                    minQueryLength="5"/>
+    <p:message for="manda"/>
+    
+    <h:outputText value="${label['partida.visita']}:"/>
+    <p:autoComplete id="visita" value="#{managedBean.partida.visita}"
+                    converter="#{timeConverter}"
+                    itemLabel="#{visita.nome}" 
+                    itemValue="#{visita}"
+                    var="visita"
+                    label="${label['partida.visita']}"
+                    required="true"
+                    forceSelection="true"
+                    completeMethod="#{timeBean.autoComplete}"
+                    minQueryLength="5"/>
+    <p:message for="visita"/>
+    
+    <h:outputText value="${label['partida.campeonato']}:"/>
+    <p:autoComplete id="campeonato" value="#{managedBean.partida.campeonato}"
+                    converter="#{campeonatoConverter}"
+                    itemLabel="#{campeonato.nome}" 
+                    itemValue="#{campeonato}"
+                    var="campeonato"
+                    label="${label['partida.campeonato']}"
+                    required="true"
+                    forceSelection="true"
+                    completeMethod="#{campeonatoBean.autoComplete}"
+                    minQueryLength="5"/>
+    <p:message for="campeonato"/>
+    
+    <h:outputText value="${label['partida.placarManda']}:"/>
+    <p:inputText id="placarManda" value="#{managedBean.partida.placarManda}" required="true" 
+                 label="${label['partida.placarManda']}"/>
+    <p:message for="placarManda"/>
+    
+    <h:outputText value="${label['partida.placarVisita']}:"/>
+    <p:inputText id="placarVisita" value="#{managedBean.partida.placarVisita}" required="true" 
+                 label="${label['partida.placarVisita']}"/>
+    <p:message for="placarVisita"/>
+    
+    <ui:remove>
+      <p:selectOneMenu value="#{managedBean.partida.estadio}"
+                       converter="#{estadioConverter}">
+        <f:selectItems value="#{estadioBean.list}" 
+                       var="estadio" itemLabel="#{estadio.nome}" 
+                       itemValue="#{estadio}"/>
+      </p:selectOneMenu>
+    </ui:remove>
+    
+    <ui:remove>
+      <p:selectOneMenu value="#{managedBean.partida.manda}"
+                       converter="#{timeConverter}">
+        <f:selectItems value="#{timeBean.list}" 
+                       var="manda" itemLabel="#{manda.nome}" 
+                       itemValue="#{manda}"/>
+      </p:selectOneMenu>
+    </ui:remove>
+    
+    <ui:remove>
+      <p:selectOneMenu value="#{managedBean.partida.visita}"
+                       converter="#{timeConverter}">
+        <f:selectItems value="#{timeBean.list}" 
+                       var="visita" itemLabel="#{visita.nome}" 
+                       itemValue="#{visita}"/>
+      </p:selectOneMenu>
+    </ui:remove>
+
+        <ui:remove>
+      <p:selectOneMenu value="#{managedBean.partida.campeonato}"
+                       converter="#{campeonatoConverter}">
+        <f:selectItems value="#{campeonatoBean.list}" 
+                       var="campeonato" itemLabel="#{campeonato.nome}" 
+                       itemValue="#{campeonato}"/>
+      </p:selectOneMenu>
+    </ui:remove>
+    
+  </ui:define>
+
+  <ui:define name="tabela">
+    <p:dataTable id="listaPartidas" value="#{managedBean.partidas}" var="partida" rows="25"
+                 paginator="true"  rowsPerPageTemplate="25,50,75,100" paginatorPosition="bottom" 
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                 currentPageReportTemplate="[ {startRecord} a {endRecord} de {totalRecords} - Página: {currentPage}/{totalPages} ]"                    
+                 rowKey="#{partida.id}" lazy="true">
+      <p:column headerText="ID">
+        <h:outputText value="#{partida.id}"/>
+      </p:column>
+      <p:column headerText="Data do jogo">
+        <h:outputText value="#{partida.dataJogo}"/>
+      </p:column>
+      <p:column headerText="Campeonato">
+        <h:outputText value="#{partida.campeonato}"/>
+      </p:column>
+      <p:column headerText="Estádio do jogo">
+        <h:outputText value="#{partida.estadio.nome}"/>
+      </p:column>
+      <p:column headerText="Time que manda o jogo">
+        <h:outputText value="#{partida.manda.nome}"/>
+      </p:column>
+      <p:column headerText="Time visitante">
+        <h:outputText value="#{partida.visita.nome}"/>
+      </p:column>
+      <p:column headerText="Placar mandante">
+        <h:outputText value="#{partida.placarManda}"/>
+      </p:column>
+      <p:column headerText="Placar visitante">
+        <h:outputText value="#{partida.placarVisita}"/>
+      </p:column>
+      <p:column>
+        <h:commandButton value="Editar" >
+          <f:setPropertyActionListener value="#{partida}" 
+                                       target="#{managedBean.partida}"/>
+        </h:commandButton>
+      </p:column>
+    </p:dataTable>     
+  </ui:define>
+
+</ui:composition>

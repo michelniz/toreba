@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./template.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+  <ui:param name="pageTitle" value="Cadastro de Time"/>
+  <ui:param name="managedBean" value="#{timeBean}"/>
+  <ui:param name="size" value="3"/>
+
+
+  <ui:define name="camposDoFormulario">
+
+    <h:outputText value="${label['time.nome']}:"/>
+    <p:inputText id="nome" value="#{managedBean.time.nome}" required="true" 
+                 label="${label['time.nome']}"/>
+    <p:message for="nome"/>
+
+    <h:outputText value="${label['time.estadio']}:"/>
+    <p:autoComplete id="estadio" value="#{managedBean.time.estadio}"
+                    converter="#{estadioConverter}"
+                    itemLabel="#{estadio.nome}" 
+                    itemValue="#{estadio}"
+                    var="estadio"
+                    label="${label['time.estadio']}"
+                    required="true"
+                    forceSelection="true"
+                    completeMethod="#{estadioBean.autoComplete}"
+                    minQueryLength="5"/>
+    <p:message for="estadio"/>
+    
+    
+    
+    <ui:remove>
+      <p:selectOneMenu value="#{managedBean.time.estadio}"
+                       converter="#{estadioConverter}">
+        <f:selectItems value="#{estadioBean.list}" 
+                       var="estadio" itemLabel="#{estadio.nome}" 
+                       itemValue="#{estadio}"/>
+      </p:selectOneMenu>
+    </ui:remove>
+
+  </ui:define>
+
+  <ui:define name="tabela">
+    <p:dataTable id="listaTimes" value="#{managedBean.times}" var="time" rows="25"
+                 paginator="true"  rowsPerPageTemplate="25,50,75,100" paginatorPosition="bottom" 
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                 currentPageReportTemplate="[ {startRecord} a {endRecord} de {totalRecords} - Página: {currentPage}/{totalPages} ]"                    
+                 rowKey="#{time.id}" lazy="true">
+      <p:column headerText="ID">
+        <h:outputText value="#{time.id}"/>
+      </p:column>
+      <p:column headerText="Nome">
+        <h:outputText value="#{time.nome}"/>
+      </p:column>
+      <p:column headerText="Estádio em que manda o jogo">
+        <h:outputText value="#{time.estadio.nome}"/>
+      </p:column>
+      <p:column>
+        <h:commandButton value="Editar" >
+          <f:setPropertyActionListener value="#{time}" 
+                                       target="#{managedBean.time}"/>
+        </h:commandButton>
+      </p:column>
+    </p:dataTable>     
+  </ui:define>
+
+</ui:composition>
